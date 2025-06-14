@@ -15,6 +15,7 @@ import java.util.Date;
  * and is meant to be extended by aggregate root entities across the domain layer.
  * @param <T> the type of the aggregate root extending this class
  * @author Luciana Choquehuanca
+ *
  */
 @Getter
 @EntityListeners(AuditingEntityListener.class) // Enables auditing features (e.g., auto-setting createdAt and updatedAt)
