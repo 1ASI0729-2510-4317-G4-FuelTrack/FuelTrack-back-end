@@ -3,7 +3,6 @@ package com.acme.fueltrack.backend.operations.domain.model.aggregates;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.Setter;
 import com.acme.fueltrack.backend.operations.domain.model.commands.CreateTransportCommand;
 import com.acme.fueltrack.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 
@@ -19,6 +18,8 @@ public class Transport extends AuditableAbstractAggregateRoot<Transport> {
 
     @NotBlank(message = "El tipo de tanque no puede estar vacío")
     private String tank;
+
+    private boolean available = true;
 
     public Transport() {
     }
@@ -36,7 +37,4 @@ public class Transport extends AuditableAbstractAggregateRoot<Transport> {
         return this;
     }
 
-    public boolean isTankTypeValid(String expectedType) {
-        return this.tank != null && this.tank.equalsIgnoreCase(expectedType);
-    }
 }
