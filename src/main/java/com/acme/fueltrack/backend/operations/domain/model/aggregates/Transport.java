@@ -1,0 +1,42 @@
+package com.acme.fueltrack.backend.operations.domain.model.aggregates;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+import com.acme.fueltrack.backend.operations.domain.model.commands.CreateTransportCommand;
+import com.acme.fueltrack.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+
+@Getter
+@Entity
+public class Transport extends AuditableAbstractAggregateRoot<Transport> {
+
+    @NotBlank(message = "La placa no puede estar vacía")
+    private String plate;
+
+    @NotBlank(message = "El nombre del conductor no puede estar vacío")
+    private String driver;
+
+    @NotBlank(message = "El tipo de tanque no puede estar vacío")
+    private String tank;
+
+    public Transport() {
+    }
+
+    public Transport(CreateTransportCommand command) {
+        this.plate = command.plate();
+        this.driver = command.driver();
+        this.tank = command.tank();
+    }
+
+    public Transport updateWithCommand(CreateTransportCommand command) {
+        this.plate = command.plate();
+        this.driver = command.driver();
+        this.tank = command.tank();
+        return this;
+    }
+
+    public boolean isTankTypeValid(String expectedType) {
+        return this.tank != null && this.tank.equalsIgnoreCase(expectedType);
+    }
+}
