@@ -8,7 +8,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "deliveries")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,21 +17,18 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "delivery_at", nullable = false)
     private LocalDateTime deliveryAt;
-
-    @Column(name = "received_by", nullable = false)
     private String receivedBy;
-
-    @Column(name = "location", nullable = false)
     private String location;
 
-    // Luciana: Temporary relationship with Order - only storing the ID for now
-    @Column(name = "orders_id", nullable = true)
     private Long orderId;
+    private Long transportId;
 
-    // Luciana: Many-to-one relationship with Transport entity
-    @ManyToOne
-    @JoinColumn(name = "transports_id", nullable = false)
-    private Transport transport;
+    public Delivery(LocalDateTime deliveryAt, String receivedBy, String location, Long orderId, Long transportId) {
+        this.deliveryAt = deliveryAt;
+        this.receivedBy = receivedBy;
+        this.location = location;
+        this.orderId = orderId;
+        this.transportId = transportId;
+    }
 }
