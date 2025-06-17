@@ -5,17 +5,32 @@ import com.acme.fueltrack.backend.orders.domain.model.valueobjects.OrderStatus;
 import lombok.Getter;
 
 import java.util.UUID;
+import jakarta.persistence.*;
 
 @Getter
+@Entity
+@Table(name = "fuel_orders")
 public class FuelOrder {
-    private final UUID orderId;
-    private final UUID requesterId;
-    private final FuelType fuelType;
-    private final double quantity;
+
+    // Getters
+    @Id
+    @GeneratedValue
+    private UUID orderId;
+
+    private UUID requesterId;
+
+    @Enumerated(EnumType.STRING)
+    private FuelType fuelType;
+
+    private double quantity;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    // Constructor requerido por JPA
+    protected FuelOrder() {}
+
     public FuelOrder(UUID requesterId, FuelType fuelType, double quantity) {
-        this.orderId = UUID.randomUUID();
         this.requesterId = requesterId;
         this.fuelType = fuelType;
         this.quantity = quantity;
