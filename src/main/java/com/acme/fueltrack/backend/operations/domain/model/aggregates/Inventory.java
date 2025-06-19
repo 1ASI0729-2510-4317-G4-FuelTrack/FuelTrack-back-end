@@ -1,18 +1,17 @@
 package com.acme.fueltrack.backend.operations.domain.model.aggregates;
 
+import com.acme.fueltrack.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "inventories")
 @Getter
-@Setter
 @NoArgsConstructor
-public class Inventory {
+public class Inventory extends AuditableAbstractAggregateRoot<Inventory> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +25,16 @@ public class Inventory {
 
     private Long supplierId;
 
+
     public Inventory(String fuelType, BigDecimal availableQt, LocalDateTime lastUpdate, Long supplierId) {
+        this.fuelType = fuelType;
+        this.availableQt = availableQt;
+        this.lastUpdate = lastUpdate;
+        this.supplierId = supplierId;
+    }
+
+
+    public void update(String fuelType, BigDecimal availableQt, LocalDateTime lastUpdate, Long supplierId) {
         this.fuelType = fuelType;
         this.availableQt = availableQt;
         this.lastUpdate = lastUpdate;

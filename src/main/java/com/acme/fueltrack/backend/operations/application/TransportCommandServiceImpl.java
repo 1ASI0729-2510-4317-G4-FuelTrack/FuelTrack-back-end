@@ -3,6 +3,7 @@ package com.acme.fueltrack.backend.operations.application;
 import org.springframework.stereotype.Service;
 import com.acme.fueltrack.backend.operations.domain.model.aggregates.Transport;
 import com.acme.fueltrack.backend.operations.domain.model.commands.CreateTransportCommand;
+import com.acme.fueltrack.backend.operations.domain.model.commands.UpdateTransportCommand;
 import com.acme.fueltrack.backend.operations.domain.services.TransportCommandService;
 import com.acme.fueltrack.backend.operations.infrastructure.persistence.jpa.repositories.TransportRepository;
 
@@ -26,5 +27,13 @@ public class TransportCommandServiceImpl implements TransportCommandService {
             throw new IllegalArgumentException("Error while saving transport: " + e.getMessage());
         }
         return Optional.of(transport);
+    }
+    @Override
+    public Optional<Transport> updateTransport(UpdateTransportCommand command) {
+        return transportRepository.findById(command.id())
+                .map(transport -> {
+                    transport.updateWithCommand(command);
+                    return transportRepository.save(transport);
+                });
     }
 }

@@ -1,12 +1,16 @@
 package com.acme.fueltrack.backend.operations.interfaces.rest;
 
 import com.acme.fueltrack.backend.operations.domain.model.commands.CreateDeliveryCommand;
+import com.acme.fueltrack.backend.operations.domain.model.commands.UpdateDeliveryCommand;
 import com.acme.fueltrack.backend.operations.domain.services.DeliveryCommandService;
 import com.acme.fueltrack.backend.operations.domain.services.DeliveryQueryService;
 import com.acme.fueltrack.backend.operations.interfaces.rest.resources.CreateDeliveryResource;
 import com.acme.fueltrack.backend.operations.interfaces.rest.resources.DeliveryResource;
+import com.acme.fueltrack.backend.operations.interfaces.rest.resources.UpdateDeliveryResource;
 import com.acme.fueltrack.backend.operations.interfaces.rest.transform.CreateDeliveryCommandFromResourceAssembler;
+import com.acme.fueltrack.backend.operations.interfaces.rest.transform.UpdateDeliveryCommandFromResourceAssembler;
 import com.acme.fueltrack.backend.operations.interfaces.rest.transform.DeliveryResourceFromEntityAssembler;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +33,9 @@ public class DeliveryController {
     public ResponseEntity<DeliveryResource> createDelivery(@RequestBody CreateDeliveryResource resource) {
         CreateDeliveryCommand command = CreateDeliveryCommandFromResourceAssembler.toCommand(resource);
         var delivery = deliveryCommandService.handle(command);
-        var deliveryResource = DeliveryResourceFromEntityAssembler.toResource(delivery);
-        return ResponseEntity.ok(deliveryResource);
+        return delivery
+                .map(value -> ResponseEntity.ok(DeliveryResourceFromEntityAssembler.toResource(value)))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @GetMapping
@@ -45,8 +50,8 @@ public class DeliveryController {
     @GetMapping("/{id}")
     public ResponseEntity<DeliveryResource> getDeliveryById(@PathVariable Long id) {
         var delivery = deliveryQueryService.handleGetDeliveryById(id);
-        return delivery.map(value ->
-                ResponseEntity.ok(DeliveryResourceFromEntityAssembler.toResource(value)))
+        return delivery
+                .map(value -> ResponseEntity.ok(DeliveryResourceFromEntityAssembler.toResource(value)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -66,5 +71,15 @@ public class DeliveryController {
                 .map(DeliveryResourceFromEntityAssembler::toResource)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resources);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DeliveryResource> updateDelivery(
+            @PathVariable Long id,
+            @RequestBody UpdateDeliveryResource resource) {
+        UpdateDeliveryCommand command = UpdateDeliveryCommandFromResourceAssembler.toCommand(id, resource);
+        return deliveryCommandService.updateDelivery(command)
+                .map(updatedDelivery -> ResponseEntity.ok(DeliveryResourceFromEntityAssembler.toResource(updatedDelivery)))
+                .orElse(ResponseEntity.notFound().build());
     }
 }

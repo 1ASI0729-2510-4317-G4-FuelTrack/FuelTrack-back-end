@@ -4,8 +4,10 @@ import com.acme.fueltrack.backend.operations.domain.services.TransportCommandSer
 import com.acme.fueltrack.backend.operations.domain.services.TransportQueryService;
 import com.acme.fueltrack.backend.operations.domain.model.queries.GetAllTransportQuery;
 import com.acme.fueltrack.backend.operations.interfaces.rest.resources.CreateTransportResource;
+import com.acme.fueltrack.backend.operations.interfaces.rest.resources.UpdateTransportResource;
 import com.acme.fueltrack.backend.operations.interfaces.rest.resources.TransportResource;
 import com.acme.fueltrack.backend.operations.interfaces.rest.transform.CreateTransportCommandFromResourceAssembler;
+import com.acme.fueltrack.backend.operations.interfaces.rest.transform.UpdateTransportCommandFromResourceAssembler;
 import com.acme.fueltrack.backend.operations.interfaces.rest.transform.TransportResourceFromEntityAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +51,21 @@ public class TransportController {
         var result = TransportResourceFromEntityAssembler.toResource(transport);
         return ResponseEntity.ok(result);
     }
+    // PUT update transport
+    @PutMapping("/{id}")
+    public ResponseEntity<TransportResource> update(@PathVariable Long id, @RequestBody UpdateTransportResource resource) {
+        var command = UpdateTransportCommandFromResourceAssembler.toCommand(id, resource);
+        var optionalTransport = transportCommandService.updateTransport(command);
+
+        if (optionalTransport.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var updated = optionalTransport.get();
+        var result = TransportResourceFromEntityAssembler.toResource(updated);
+        return ResponseEntity.ok(result);
+    }
+
+
 
 }

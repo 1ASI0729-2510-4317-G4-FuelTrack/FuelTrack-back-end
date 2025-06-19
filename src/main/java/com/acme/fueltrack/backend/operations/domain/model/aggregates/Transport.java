@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import com.acme.fueltrack.backend.operations.domain.model.commands.CreateTransportCommand;
+import com.acme.fueltrack.backend.operations.domain.model.commands.UpdateTransportCommand;
 import com.acme.fueltrack.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 
 @Getter
@@ -30,11 +31,13 @@ public class Transport extends AuditableAbstractAggregateRoot<Transport> {
         this.tank = command.tank();
     }
 
-    public Transport updateWithCommand(CreateTransportCommand command) {
+    public Transport updateWithCommand(UpdateTransportCommand command) {
         this.plate = command.plate();
         this.driver = command.driver();
         this.tank = command.tank();
+        this.available = command.available();
         return this;
     }
+
 
 }
