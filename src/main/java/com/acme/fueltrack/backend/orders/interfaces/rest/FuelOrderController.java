@@ -34,7 +34,8 @@ public class FuelOrderController {
         FuelOrder order = service.createOrder(
                 mapper.toCommand(resource).requesterId(),
                 mapper.toCommand(resource).fuelType(),
-                mapper.toCommand(resource).quantity()
+                mapper.toCommand(resource).quantity(),
+                mapper.toCommand(resource).note()
         );
         return ResponseEntity.ok(order);
     }

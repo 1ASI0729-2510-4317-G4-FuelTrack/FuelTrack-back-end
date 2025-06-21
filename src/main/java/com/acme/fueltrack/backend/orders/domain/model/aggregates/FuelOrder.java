@@ -23,6 +23,7 @@ public class FuelOrder {
     private FuelType fuelType;
 
     private double quantity;
+    private String note;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -30,11 +31,12 @@ public class FuelOrder {
     // Constructor requerido por JPA
     protected FuelOrder() {}
 
-    public FuelOrder(UUID requesterId, FuelType fuelType, double quantity) {
+    public FuelOrder(UUID requesterId, FuelType fuelType, double quantity, String note) {
         this.requesterId = requesterId;
         this.fuelType = fuelType;
         this.quantity = quantity;
         this.status = OrderStatus.PENDING;
+        this.note = note;
     }
 
     public void markAsProcessed() {

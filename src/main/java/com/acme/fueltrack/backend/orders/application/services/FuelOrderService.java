@@ -25,8 +25,8 @@ public class FuelOrderService {
     }
 
     @Transactional
-    public FuelOrder createOrder(UUID requesterId, FuelType fuelType, double quantity) {
-        FuelOrder order = new FuelOrder(requesterId, fuelType, quantity);
+    public FuelOrder createOrder(UUID requesterId, FuelType fuelType, double quantity,String note) {
+        FuelOrder order = new FuelOrder(requesterId, fuelType, quantity, note);
         FuelOrder savedOrder = fuelOrderRepository.save(order);
 
         OrderPayment payment = new OrderPayment(savedOrder);
