@@ -7,12 +7,14 @@ import lombok.Getter;
 import java.util.UUID;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+
 @Getter
 @Entity
 @Table(name = "fuel_orders")
 public class FuelOrder {
 
-    // Getters
     @Id
     @GeneratedValue
     private UUID orderId;
@@ -23,10 +25,15 @@ public class FuelOrder {
     private FuelType fuelType;
 
     private double quantity;
+
     private String note;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     // Constructor requerido por JPA
     protected FuelOrder() {}
@@ -35,8 +42,8 @@ public class FuelOrder {
         this.requesterId = requesterId;
         this.fuelType = fuelType;
         this.quantity = quantity;
-        this.status = OrderStatus.PENDING;
         this.note = note;
+        this.status = OrderStatus.PENDING;
     }
 
     public void markAsProcessed() {
