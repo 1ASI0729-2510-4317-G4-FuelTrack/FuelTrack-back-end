@@ -1,4 +1,4 @@
-package com.acme.fueltrack.backend.operations.application;
+package com.acme.fueltrack.backend.operations.application.internal.commandservice;
 
 import com.acme.fueltrack.backend.operations.domain.model.aggregates.Delivery;
 import com.acme.fueltrack.backend.operations.domain.model.commands.CreateDeliveryCommand;

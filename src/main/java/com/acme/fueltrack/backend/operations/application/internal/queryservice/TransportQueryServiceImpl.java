@@ -1,4 +1,4 @@
-package com.acme.fueltrack.backend.operations.application;
+package com.acme.fueltrack.backend.operations.application.internal.queryservice;
 
 import com.acme.fueltrack.backend.operations.domain.model.aggregates.Transport;
 import com.acme.fueltrack.backend.operations.domain.model.queries.GetAllTransportQuery;
