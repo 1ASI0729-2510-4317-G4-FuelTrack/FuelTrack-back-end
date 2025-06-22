@@ -9,8 +9,8 @@ public class CreateNotificationCommandFromResourceAssembler {
             resource.message(),
             resource.alreadyRead(),
             resource.createdAt(),
-            resource.usersId(),
-            resource.ordersId()
+            resource.userId(),
+            resource.orderId()
         );
     }
 }

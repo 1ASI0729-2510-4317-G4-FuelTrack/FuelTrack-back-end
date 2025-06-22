@@ -6,6 +6,6 @@ public record CreateNotificationResource(
     String message,
     boolean alreadyRead,
     LocalDateTime createdAt,
-    int usersId,
-    int ordersId
+    int userId,
+    int orderId
 ) {}
