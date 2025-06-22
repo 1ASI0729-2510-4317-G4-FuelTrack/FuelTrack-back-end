@@ -14,7 +14,8 @@ public class FuelOrderMapper {
         return new FuelOrderCommand(
                 UUID.fromString(resource.requesterId()),
                 FuelType.valueOf(resource.fuelType().toUpperCase()),
-                resource.quantity()
+                resource.quantity(),
+                resource.note()
         );
     }
 }
