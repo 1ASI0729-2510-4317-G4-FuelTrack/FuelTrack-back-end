@@ -1,4 +1,5 @@
-package com.acme.fueltrack.backend.shared.infrastucture.persistence.jpa.strategy;
+package com.acme.fueltrack.backend.shared.infrastucture.persistence.jpa.configuration.strategy;
+
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
@@ -6,7 +7,7 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
 import static io.github.encryptorcode.pluralize.Pluralize.pluralize;
 
-public class SnakeCasePhysicalNamingStrategy implements PhysicalNamingStrategy {
+public class SnakeCaseWithPluralizedTablePhysicalNamingStrategy implements PhysicalNamingStrategy {
     @Override
     public Identifier toPhysicalCatalogName(Identifier identifier, JdbcEnvironment jdbcEnvironment) {
         return this.toSnakeCase(identifier);
@@ -31,17 +32,21 @@ public class SnakeCasePhysicalNamingStrategy implements PhysicalNamingStrategy {
     public Identifier toPhysicalColumnName(Identifier identifier, JdbcEnvironment jdbcEnvironment) {
         return this.toSnakeCase(identifier);
     }
-    private Identifier toSnakeCase(final Identifier identifier){
-        if(identifier == null) return null;
 
-        final String regex = "[a-z][A-Z]";
-        final String replacement = "1_$2";
-        final String newName = identifier.getText() // FuelOrder
-                .replaceAll(regex, replacement) // Fuel_Order
-                .toLowerCase(); // fuel_order
+    private Identifier toSnakeCase(final Identifier identifier) {
+        if (identifier == null) {
+            return null;
+        }
+
+        final String regex = "([a-z])([A-Z])";
+        final String replacement = "$1_$2";
+        final String newName = identifier.getText()
+                .replaceAll(regex, replacement)
+                .toLowerCase();
 
         return Identifier.toIdentifier(newName);
     }
+
     private Identifier toPlural(final Identifier identifier){
         final String newName = pluralize(identifier.getText());
         return Identifier.toIdentifier(newName);
