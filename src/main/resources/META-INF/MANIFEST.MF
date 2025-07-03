@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: com.acme.fueltrack.FuelTrackApplication  
+Main-Class: com.acme.fueltrack.backend.FuelTrackBackEndApplication
+
 
