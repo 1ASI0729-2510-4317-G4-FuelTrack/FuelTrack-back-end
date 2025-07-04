@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: fueltrack-backend
+    env: java
+    plan: free
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/back-end-0.0.1-SNAPSHOT.jar"
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://fueltrack-db.internal:5432/fueltrack_db
+      - key: SPRING_DATASOURCE_USERNAME
+        value: fueltrack_db_user
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: ssTsFncfh68RSEHIQ62EVZJX6BmF7bXn
