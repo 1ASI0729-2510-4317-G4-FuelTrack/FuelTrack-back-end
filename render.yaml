@@ -1,10 +1,9 @@
 services:
   - type: web
     name: fueltrack-backend
-    env: java
+    env: docker
     plan: free
-    buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/back-end-0.0.1-SNAPSHOT.jar"
+    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://fueltrack-db.internal:5432/fueltrack_db
