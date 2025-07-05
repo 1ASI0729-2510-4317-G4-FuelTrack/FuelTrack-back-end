@@ -7,8 +7,6 @@ import com.acme.fueltrack.backend.validations.domain.model.commands.CreateNotifi
 import com.acme.fueltrack.backend.validations.domain.model.commands.MarkNotificationAsReadCommand;
 import com.acme.fueltrack.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Entity
 public class Notification extends AuditableAbstractAggregateRoot<Notification> {
@@ -18,17 +16,17 @@ public class Notification extends AuditableAbstractAggregateRoot<Notification> {
 
     private boolean alreadyRead;
 
-    private int usersId;
+    private int userId;
 
-    private int ordersId;
+    private int orderId;
 
     public Notification() {}
 
     public Notification(CreateNotificationCommand command) {
         this.message = command.message();
         this.alreadyRead = command.alreadyRead();
-        this.usersId = command.usersId();
-        this.ordersId = command.ordersId();
+        this.userId = command.userId();
+        this.orderId = command.orderId();
     }
 
     public Notification markAsRead(MarkNotificationAsReadCommand command) {

@@ -4,6 +4,6 @@ public record NotificationResource(
     Long id,
     String message,
     boolean alreadyRead,
-    int usersId,
-    int ordersId
+    int userId,
+    int orderId
 ) {}
