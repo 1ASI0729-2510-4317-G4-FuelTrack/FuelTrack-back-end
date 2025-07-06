@@ -1,4 +1,4 @@
-package com.acme.fueltrack.backend.orders.domain.model.commands;
+package com.acme.fueltrack.backend.orders.application.internal.commands;
 
 import com.acme.fueltrack.backend.orders.domain.model.valueobjects.FuelType;
 

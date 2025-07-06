@@ -1,4 +1,4 @@
-package com.acme.fueltrack.backend.orders.application.services;
+package com.acme.fueltrack.backend.orders.application.internal.services;
 
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.FuelOrder;
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.OrderPayment;

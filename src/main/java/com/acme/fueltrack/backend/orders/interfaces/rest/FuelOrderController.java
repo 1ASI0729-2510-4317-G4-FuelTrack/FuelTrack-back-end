@@ -1,6 +1,6 @@
 package com.acme.fueltrack.backend.orders.interfaces.rest;
 
-import com.acme.fueltrack.backend.orders.application.services.FuelOrderService;
+import com.acme.fueltrack.backend.orders.application.internal.services.FuelOrderService;
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.FuelOrder;
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.OrderPayment;
 import com.acme.fueltrack.backend.orders.infrastuctrure.persistence.OrderPaymentRepository;
