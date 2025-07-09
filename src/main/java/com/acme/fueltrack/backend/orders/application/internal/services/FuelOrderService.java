@@ -74,6 +74,4 @@ public class FuelOrderService {
         fuelOrderRepository.deleteById(orderId);
     }
 
-
-
 }
