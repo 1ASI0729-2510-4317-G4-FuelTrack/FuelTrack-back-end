@@ -45,10 +45,9 @@ public class FuelOrderController {
         return ResponseEntity.ok(service.getAllOrders());
     }
 
-    @DeleteMapping("/{orderid}")
-    public ResponseEntity<Void> deleteOrder(
-            @PathVariable UUID orderid) {
-        service.deleteOrder(orderid);
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable UUID orderId) {
+        service.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
     }
 
