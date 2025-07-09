@@ -58,17 +58,31 @@ public class FuelOrderController {
             @PathVariable UUID orderId,
             @RequestBody CompletePaymentResource paymentResource) {
 
+        final double PRICE_PER_GALLON = 5.0;
+
         OrderPayment payment = paymentRepository.findAll()
                 .stream()
                 .filter(p -> p.getFuelOrder().getOrderId().equals(orderId))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Payment not found for order"));
 
+        double requiredAmount = payment.getFuelOrder().getQuantity() * PRICE_PER_GALLON;
+
+        if (paymentResource.amount() <= 0) {
+            return ResponseEntity.badRequest().body("El monto debe ser mayor a cero.");
+        }
+
+        if (paymentResource.amount() < requiredAmount) {
+            return ResponseEntity.badRequest()
+                    .body("El monto ingresado no cubre la cantidad de galones solicitados. Monto mínimo: $" + requiredAmount);
+        }
+
         payment.completePayment(paymentResource.amount(), paymentResource.method());
         paymentRepository.save(payment);
 
         return ResponseEntity.ok().build();
     }
+
 
     @PutMapping("/{orderId}/process")
     public ResponseEntity<FuelOrder> processOrder(@PathVariable UUID orderId) {
