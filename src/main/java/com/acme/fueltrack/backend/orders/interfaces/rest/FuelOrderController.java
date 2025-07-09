@@ -4,6 +4,7 @@ import com.acme.fueltrack.backend.orders.application.internal.services.FuelOrder
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.FuelOrder;
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.OrderPayment;
 import com.acme.fueltrack.backend.orders.domain.model.valueobjects.PaymentStatus;
+import com.acme.fueltrack.backend.orders.domain.model.valueobjects.FuelType;
 import com.acme.fueltrack.backend.orders.infrastuctrure.persistence.OrderPaymentRepository;
 import com.acme.fueltrack.backend.orders.interfaces.rest.resources.CreateFuelOrderResource;
 import com.acme.fueltrack.backend.orders.interfaces.rest.resources.CompletePaymentResource;
@@ -58,24 +59,39 @@ public class FuelOrderController {
             @PathVariable UUID orderId,
             @RequestBody CompletePaymentResource paymentResource) {
 
-        final double PRICE_PER_GALLON = 5.0;
-
+        // Buscar el pago correspondiente al pedido
         OrderPayment payment = paymentRepository.findAll()
                 .stream()
                 .filter(p -> p.getFuelOrder().getOrderId().equals(orderId))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Payment not found for order"));
 
-        double requiredAmount = payment.getFuelOrder().getQuantity() * PRICE_PER_GALLON;
+        double pricePerGallon;
+        FuelType fuelType = payment.getFuelOrder().getFuelType();
+
+        switch (fuelType) {
+            case DIESEL -> pricePerGallon = 4.76;
+            case GLP -> pricePerGallon = 5.29;
+            case GASOLINE90 -> pricePerGallon = 5.12;
+            case GASOLINE95 -> pricePerGallon = 4.57;
+            default -> {
+                return ResponseEntity.badRequest().body("Tipo de combustible no reconocido.");
+            }
+        }
+
+
+        double requiredAmount = payment.getFuelOrder().getQuantity() * pricePerGallon;
 
         if (paymentResource.amount() <= 0) {
             return ResponseEntity.badRequest().body("El monto debe ser mayor a cero.");
         }
 
-        if (paymentResource.amount() < requiredAmount) {
+// Se permite un margen de ±0.01 por redondeos
+        if (Math.abs(paymentResource.amount() - requiredAmount) > 0.01) {
             return ResponseEntity.badRequest()
-                    .body("El monto ingresado no cubre la cantidad de galones solicitados. Monto mínimo: $" + requiredAmount);
+                    .body("El monto ingresado no coincide con el requerido. Monto esperado: $" + requiredAmount);
         }
+
 
         payment.completePayment(paymentResource.amount(), paymentResource.method());
         paymentRepository.save(payment);
