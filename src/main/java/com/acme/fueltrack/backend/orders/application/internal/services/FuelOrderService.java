@@ -67,11 +67,13 @@ public class FuelOrderService {
         return fuelOrderRepository.findAll();
     }
 
-    public void deleteOrder(UUID id) {
-        if (!fuelOrderRepository.existsById(id)) {
+    public void deleteOrder(UUID orderid) {
+        if (!fuelOrderRepository.existsById(orderid)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found");
         }
-        fuelOrderRepository.deleteById(id);
+        fuelOrderRepository.deleteById(orderid);
     }
+
+
 
 }
