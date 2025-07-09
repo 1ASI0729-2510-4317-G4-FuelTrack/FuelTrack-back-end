@@ -1,6 +1,6 @@
 package com.acme.fueltrack.backend.orders.interfaces.rest;
 
-import com.acme.fueltrack.backend.orders.application.services.FuelOrderService;
+import com.acme.fueltrack.backend.orders.application.internal.services.FuelOrderService;
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.FuelOrder;
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.OrderPayment;
 import com.acme.fueltrack.backend.orders.infrastuctrure.persistence.OrderPaymentRepository;
@@ -44,6 +44,13 @@ public class FuelOrderController {
     public ResponseEntity<List<FuelOrder>> getAllOrders() {
         return ResponseEntity.ok(service.getAllOrders());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable UUID id) {
+        service.deleteOrder(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
     @PutMapping("/{orderId}/payment")
     public ResponseEntity<?> completePayment(

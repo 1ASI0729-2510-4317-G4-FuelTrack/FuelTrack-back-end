@@ -1,4 +1,4 @@
-package com.acme.fueltrack.backend.orders.application.services;
+package com.acme.fueltrack.backend.orders.application.internal.services;
 
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.FuelOrder;
 import com.acme.fueltrack.backend.orders.domain.model.aggregates.OrderPayment;
@@ -8,6 +8,9 @@ import com.acme.fueltrack.backend.orders.infrastuctrure.persistence.FuelOrderRep
 import com.acme.fueltrack.backend.orders.infrastuctrure.persistence.OrderPaymentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -63,4 +66,12 @@ public class FuelOrderService {
     public List<FuelOrder> getAllOrders() {
         return fuelOrderRepository.findAll();
     }
+
+    public void deleteOrder(UUID id) {
+        if (!fuelOrderRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found");
+        }
+        fuelOrderRepository.deleteById(id);
+    }
+
 }

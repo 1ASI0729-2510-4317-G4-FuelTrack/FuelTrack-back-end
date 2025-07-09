@@ -1,6 +1,6 @@
 package com.acme.fueltrack.backend.orders.interfaces.rest.transform;
 
-import com.acme.fueltrack.backend.orders.domain.model.commands.FuelOrderCommand;
+import com.acme.fueltrack.backend.orders.application.internal.commands.FuelOrderCommand;
 import com.acme.fueltrack.backend.orders.domain.model.valueobjects.FuelType;
 import com.acme.fueltrack.backend.orders.interfaces.rest.resources.CreateFuelOrderResource;
 import org.springframework.stereotype.Component;
